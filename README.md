@@ -182,6 +182,10 @@ curl https://my-jewel-mauve.vercel.app/sitemap.xml
 curl -s https://my-jewel-mauve.vercel.app | grep -E 'og:|twitter:|canonical|ld\+json'
 ```
 
+**Google Lighthouse result** (Desktop, 2026-09-21): Performance 100 · Accessibility 96 · Best Practices 100 · **SEO 100**.
+
+![Google Lighthouse report: Performance 100, Accessibility 96, Best Practices 100, SEO 100](https://brilliant-qr-087666071238-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/Screenshot+2026-09-21+at+12.10.43%E2%80%AFAM.png)
+
 ---
 
 ## 6. Responsive approach
