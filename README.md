@@ -77,9 +77,9 @@ Any Node host works; the project is Vercel-ready. Add the two environment variab
 ├── app/
 │   ├── actions/
 │   │   └── newsletter.ts        # Server Action: validates + simulates the notification
-│   ├── favicon.ico
 │   ├── globals.css              # Tailwind import + design tokens (@theme)
-│   ├── layout.tsx               # Fonts, metadata, Open Graph/Twitter, JSON-LD, Header/Footer
+│   ├── layout.tsx               # Fonts, metadata (incl. icons), Open Graph/Twitter, JSON-LD, Header/Footer
+│   ├── manifest.ts              # Web app manifest (points at /favicon_io/ icons)
 │   ├── page.tsx                 # Composes the page sections
 │   ├── robots.ts                # robots.txt
 │   └── sitemap.ts               # sitemap.xml
@@ -96,6 +96,7 @@ Any Node host works; the project is Vercel-ready. Add the two environment variab
 ├── lib/
 │   └── site.ts                  # Site URL, title/description, OG image, sitemap routes
 ├── public/
+│   ├── favicon_io/              # Favicon set (ico, 16/32 png, apple-touch, android-chrome)
 │   ├── icons/                   # SVG icons and logo
 │   ├── images/
 │   │   ├── banner/              # Hero assets (desktop + mobile variants)
@@ -121,57 +122,34 @@ Page order (top to bottom): **Header → Banner → CustomJewelry → WhyChoose 
 
 ### 3.1 Newsletter subscription
 
-Implemented in `components/NewsletterForm.tsx` and `app/actions/newsletter.ts`.
+`components/NewsletterForm.tsx` + `app/actions/newsletter.ts`
 
-1. **Client-side validation** — `onSubmit` checks the address with a regex (`noValidate` form, custom message). An invalid address never reaches the server.
-2. **Server Action** — `useActionState` posts the form to `subscribeToNewsletter`, which validates again (never trust the client).
-3. **Simulated notification dispatch** to `process.env.EMAIL_ADDRESS` — no email provider is wired up; the action waits ~500 ms and logs the dispatch. If `EMAIL_ADDRESS` is not set it logs a warning and continues.
-4. **Server-side logging** — every outcome is logged, with the subscriber's address masked (`j***@example.com`):
+- Client-side email validation; invalid input never reaches the server.
+- Server Action re-validates, then **simulates** a notification to `process.env.EMAIL_ADDRESS` (no email provider; logs a warning if the variable is unset).
+- Server logs every outcome with the address masked (`[newsletter] notification dispatched to owner@example.com: new subscriber j***@example.com`).
+- UI feedback via an `aria-live` message under the input (no layout shift).
 
-   ```text
-   [newsletter] rejected subscription: invalid email
-   [newsletter] notification dispatched to owner@example.com: new subscriber j***@example.com
-   ```
-5. **UI feedback** — the result (`"Thank you for subscribing!"` or the error) is rendered in an absolutely positioned `aria-live` line so the layout never shifts; the button is disabled while pending and the field resets on success.
+Try it: set `EMAIL_ADDRESS`, submit an email in the footer, watch the terminal.
 
-To try it: run the app with `EMAIL_ADDRESS` set, submit an email in the footer, and watch the terminal.
+### 3.2 Testimonials (API + ISR)
 
-### 3.2 Testimonials (public API + ISR caching)
+`components/Testimonials.tsx` (server) + `components/TestimonialCarousel.tsx` (client)
 
-Implemented in `components/Testimonials.tsx` (server) and `components/TestimonialCarousel.tsx` (client).
-
-- **Source:** `https://dummyjson.com/quotes?limit=200`.
-- **Caching:** `fetch(url, { next: { revalidate: 3600 } })` — Incremental Static Regeneration. The build output lists the route with `Revalidate 1h`; the response is cached for an hour and refreshed in the background.
-- **Processing:** quotes of 30–64 characters (so they fit two lines in a card) are kept, de-duplicated, sentence-cased if the API returned Title Case, and the first 12 are used → 3 carousel pages of 4 cards.
-- **Presentation:** the API only supplies the quote text; names, role and portraits are local (`public/images/testimonials/`, cycled over the quotes).
-- **Fallback:** if the API is unreachable or returns too few quotes, a built-in list of 12 quotes is used and the error is logged (`[testimonials] quotes API unavailable, using fallback: …`), so the carousel always works.
-- **Carousel:** native scroll-snap (touch swipe works), prev/next buttons, pagination dots, keyboard-focusable controls, `prefers-reduced-motion` respected. Below `md` only the first three cards are shown (three dots, as in the design).
+- Quotes come from `https://dummyjson.com/quotes` via `fetch(url, { next: { revalidate: 3600 } })` → cached for 1 hour (the build output shows `Revalidate 1h`).
+- Short quotes are filtered, 12 are used (3 pages × 4 cards); names and portraits are local.
+- If the API fails, 12 built-in quotes are used and the error is logged.
 
 ---
 
 ## 4. Performance & Core Web Vitals strategy
 
-Targets: LCP < 2.5 s, CLS = 0, Lighthouse Performance/Accessibility/Best Practices/SEO 90–100. These are targets, not recorded results — measure them on a production build (`npm run build && npm run start`, then Lighthouse in an incognito window).
+Targets: LCP < 2.5 s, CLS = 0, Lighthouse 90–100 (targets — verify on a production build).
 
-**LCP**
-- The hero image in `Banner.tsx` uses `priority` + `loading="eager"`, explicit `width`/`height`, and a matching `sizes` attribute, so the browser can preload the right candidate.
-- Art direction with `<picture>` + `getImageProps`: mobile and desktop backgrounds/ring/tweezers are separate assets and the browser downloads only the variant that matches the viewport.
-- Fonts are self-hosted through `next/font/google` with `display: "swap"`; no external font requests at runtime.
-
-**CLS = 0**
-- Every `<Image>` has explicit `width`/`height`; decorative and photo blocks sit in fixed-height or aspect-ratio boxes (banner height, `aspect-[…]` image blocks, `min-h` cards).
-- Images are positioned absolutely inside those boxes, so loading never moves text.
-- `placeholder="blur"` is used on opaque photos (Custom Jewelry, Explore More). Transparent cut-outs use a 1×1 transparent `blurDataURL` because a coloured blur shows as a grey box behind them. No large Base64 strings are inlined.
-- The newsletter message and the carousel state changes don't affect layout.
-
-**JavaScript / INP / TBT**
-- Server Components by default; only two Client Components (newsletter form, testimonial carousel).
-- No animation or layout libraries. Fluid scaling uses CSS container query units (`cqw`) and `clamp()` instead of JS resize handlers.
-- Below-the-fold images are lazy-loaded (the `next/image` default); only above-the-fold ones are eager.
-
-**Accessibility**
-- Landmarks (`header`, `nav`, `main`, `section`, `footer`), a single `<h1>` (banner), descriptive `alt` text (empty `alt` + `aria-hidden` for decorative images), `aria-label` on icon-only buttons, `aria-live` for form feedback, browser-default focus outlines kept on interactive elements.
-- Known deviation: the design's muted grey `#7A7A7A` on white is 4.3:1, slightly under the 4.5:1 AA target. It is a Figma colour and was kept.
+- **LCP:** hero image uses `priority` + `loading="eager"`, explicit size and `sizes`; mobile/desktop variants are separate assets via `<picture>`, so only one downloads.
+- **CLS:** every `<Image>` has `width`/`height`; media sits in fixed-height or aspect-ratio boxes; blur placeholders on photos only.
+- **Fonts:** `next/font/google` (self-hosted, `display: "swap"`).
+- **JavaScript:** Server Components by default; only the newsletter form and carousel are client-side; below-the-fold images are lazy.
+- **Accessibility:** semantic landmarks, one `<h1>`, `alt` on every image, `aria-label` on icon buttons. Known gap: the design's `#7A7A7A` text is 4.3:1 on white (AA needs 4.5:1).
 
 ---
 
@@ -185,6 +163,7 @@ Targets: LCP < 2.5 s, CLS = 0, Lighthouse Performance/Accessibility/Best Practic
 | `sitemap.xml` — `url`, `lastModified`, `changeFrequency`, `priority` per route | `app/sitemap.ts` |
 | `robots.txt` — `*`, `Googlebot`, `Bingbot` → `Allow: /`, plus the sitemap link | `app/robots.ts` |
 | Open Graph image, static 1200×630 | `public/og-image.jpg` |
+| Favicons (`icons` metadata) + web app manifest; `/favicon.ico` redirects to `/favicon_io/favicon.ico` | `app/layout.tsx`, `app/manifest.ts`, `next.config.ts`, `public/favicon_io/` |
 
 Adding a page later: create the route, then add an entry to `ROUTES` in `lib/site.ts` — it appears in `sitemap.xml` automatically.
 

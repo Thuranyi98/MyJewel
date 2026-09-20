@@ -35,7 +35,7 @@ function Chevron({ className = "" }: { className?: string }) {
 // `aria-disabled` (not the `disabled` attribute) so browsers that restore form-control state on
 // reload (Firefox) can't make the DOM differ from the server HTML and break hydration.
 const ARROW_CLASS =
-  "absolute top-[calc(50%+2.5px)] z-10 grid size-[35px] -translate-y-1/2 place-items-center rounded-full border border-ink bg-white p-[5px] text-ink transition-colors aria-disabled:cursor-default aria-disabled:border-stroke aria-disabled:text-muted md:top-1/2 md:size-[45px]";
+  "absolute top-[calc(50%+2.5px)] z-10 grid size-[35px] -translate-y-1/2 place-items-center rounded-full border border-ink bg-white p-[5px] cursor-pointer text-ink transition-colors aria-disabled:cursor-default aria-disabled:border-stroke aria-disabled:text-muted md:top-1/2 md:size-[45px]";
 
 // Below `md` only the first three cards are shown (Figma's mobile pagination has three dots).
 function visibleCards(track: HTMLElement | null) {
@@ -182,7 +182,7 @@ export default function TestimonialCarousel({
               aria-label={`Go to testimonial group ${index + 1}`}
               aria-current={index === page}
               onClick={() => goTo(index)}
-              className={`relative size-2 rounded-full transition-colors before:absolute before:-inset-2 before:content-[''] ${
+              className={`relative size-2 cursor-pointer rounded-full transition-colors before:absolute before:-inset-2 before:content-[''] ${
                 index === page ? "bg-muted" : "bg-line"
               }`}
             />

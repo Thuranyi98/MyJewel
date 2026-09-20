@@ -24,6 +24,14 @@
   --font-playfair: var(--font-playfair-display);
 }
 
+/* Tailwind v4 resets buttons to the default cursor; enabled buttons should show the pointer. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
