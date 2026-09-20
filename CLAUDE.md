@@ -18,9 +18,9 @@ No test framework is configured yet.
 
 ## Stack
 
-Next.js 16.3.5 (App Router, `app/` at repo root, no `src/`), React 19.2, TypeScript strict, Tailwind CSS v4 via `@tailwindcss/postcss`. Path alias `@/*` maps to the repo root. Bootstrapped from `create-next-app`; starter page, assets and metadata have been stripped; `app/page.tsx` composes the page sections from `components/` (currently `Banner`). The site-wide `Header` (`components/Header.tsx`, mounted in `app/layout.tsx`) is a server component that switches mobile/desktop with Tailwind `lg:`; `Banner` switches composition at `md:` and scales with container query units (`cqw`) — see memory.md §8. Icons/logo are SVGs in `public/icons/`; banner images are in `public/images/banner/`.
+Next.js 16.3.5 (App Router, `app/` at repo root, no `src/`), React 19.2, TypeScript strict, Tailwind CSS v4 via `@tailwindcss/postcss`. Path alias `@/*` maps to the repo root. Bootstrapped from `create-next-app`; starter page, assets and metadata have been stripped; `app/page.tsx` composes the page sections from `components/` (currently `Banner`; `Footer` is mounted in `app/layout.tsx`, its newsletter form posts to the Server Action in `app/actions/newsletter.ts`). The site-wide `Header` (`components/Header.tsx`, mounted in `app/layout.tsx`) is a server component that switches mobile/desktop with Tailwind `lg:`; `Banner` switches composition at `md:` and scales with container query units (`cqw`) — see memory.md §8. Icons/logo are SVGs in `public/icons/`; banner images are in `public/images/banner/`.
 
-`memory.md` holds the assessment's project rules (scope, fonts, Core Web Vitals asset rules, testimonial/newsletter requirements, SEO) and the header spec/tokens — read it before building sections.
+`memory.md` holds the assessment's project rules (scope, fonts, Core Web Vitals asset rules, testimonial/newsletter requirements, SEO) and the header/banner/footer specs and tokens — read it before building sections.
 
 Next.js docs matching the installed version live in `node_modules/next/dist/docs/` (`01-app/` for App Router). Read them before using APIs — see AGENTS.md.
 

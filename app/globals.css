@@ -12,6 +12,8 @@
   --color-ink: #434343;
   --color-line: #e4e4e4;
   --color-banner: #f0f0f0;
+  --color-footer: #f8f8f8;
+  --color-brand: #0d4269;
   --font-sans: var(--font-dm-sans);
   --font-open: var(--font-open-sans);
   --font-playfair: var(--font-playfair-display);
