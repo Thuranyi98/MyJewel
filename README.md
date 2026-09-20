@@ -154,7 +154,7 @@ Targets: LCP < 2.5 s, CLS = 0, Lighthouse 90–100 (targets — verify on a prod
 - **Fonts:** `next/font/google` (self-hosted, `display: "swap"`); Open Sans (desktop-only label) is not preloaded.
 - **CSS:** the small Tailwind stylesheet is inlined (`experimental.inlineCss`), so no render-blocking CSS request.
 - **JavaScript:** Server Components by default; only the newsletter form and carousel are client-side; large below-the-fold photos are lazy, while small icons/badges are inlined SVG or eager so they never pop in on reload. `/icons` and `/images` are served with a 1-day `Cache-Control`.
-- **Accessibility:** semantic landmarks, one `<h1>`, `alt` on every image, `aria-label` on icon buttons. Known gap: the design's `#7A7A7A` text is 4.3:1 on white (AA needs 4.5:1).
+- **Accessibility:** semantic landmarks, one `<h1>`, `alt` on every image, `aria-label` on icon buttons. Muted text uses `#757575` (4.6:1 on white; the Figma `#7A7A7A` is 4.3:1, below the AA 4.5:1 minimum).
 
 ---
 
