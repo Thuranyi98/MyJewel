@@ -100,7 +100,7 @@ export default function Banner() {
           src={diamonds}
           alt=""
           aria-hidden
-          width={534}
+          width={533}
           height={347}
           sizes="(min-width: 1440px) 534px, (min-width: 768px) 37vw, 143px"
           loading="eager"

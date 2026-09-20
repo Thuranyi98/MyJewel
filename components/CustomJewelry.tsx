@@ -83,7 +83,7 @@ export default function CustomJewelry() {
             <Image
               src={band}
               alt="Diamond and gold band held in a black glove"
-              width={253}
+              width={252}
               height={330}
               sizes="(min-width: 768px) 253px, 47vw"
               placeholder="blur"

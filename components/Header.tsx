@@ -38,7 +38,7 @@ function Logo() {
     <Image
       src="/icons/MyJewel.svg"
       alt="MyJewel"
-      width={134}
+      width={133}
       height={35}
       sizes="(min-width: 1024px) 134px, 94px"
       preload

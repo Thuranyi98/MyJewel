@@ -1,6 +1,7 @@
 import Banner from "@/components/Banner";
 import CustomJewelry from "@/components/CustomJewelry";
 import ExploreMore from "@/components/ExploreMore";
+import Testimonials from "@/components/Testimonials";
 import WhyChoose from "@/components/WhyChoose";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <CustomJewelry />
       <WhyChoose />
       <ExploreMore />
+      <Testimonials />
     </main>
   );
 }
