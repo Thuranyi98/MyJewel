@@ -40,9 +40,9 @@ function Logo() {
       alt="MyJewel"
       width={134}
       height={35}
-      sizes="(min-width: 1280px) 134px, 94px"
+      sizes="(min-width: 1024px) 134px, 94px"
       preload
-      className="h-auto w-[94px] xl:w-[133.44px]"
+      className="h-auto w-[94px] lg:w-[133.44px]"
     />
   );
 }
@@ -51,22 +51,22 @@ export default function Header() {
   return (
     <header className="relative z-10 bg-white">
       {/* Sub header */}
-      <div className="flex h-[25px] items-center justify-center border-b border-line xl:grid xl:h-[35px] xl:grid-cols-[1fr_auto_1fr] xl:px-10">
+      <div className="flex h-[25px] items-center justify-center border-b border-line lg:grid lg:h-[35px] lg:grid-cols-[1fr_auto_1fr] lg:px-10">
         <Link
           href="#"
-          className="hidden items-center gap-2 font-open text-[10px] leading-[1.6] tracking-[0.03em] text-navy uppercase xl:flex"
+          className="hidden items-center gap-2 font-open text-[10px] leading-[1.6] tracking-[0.03em] text-navy uppercase lg:flex"
         >
           <Icon name="HiOutlineCalendarDays" size={20} />
           Book an appointment
         </Link>
 
-        <p className="flex items-center gap-1.5 text-center font-sans text-[8px] leading-[1.6] tracking-[0.03em] text-navy xl:gap-3 xl:text-[11px]">
-          <span aria-hidden className="size-0.5 rounded-full bg-navy xl:size-1" />
+        <p className="flex items-center gap-1.5 text-center font-sans text-[8px] leading-[1.6] tracking-[0.03em] text-navy sm:gap-3 sm:text-[11px]">
+          <span aria-hidden className="size-0.5 rounded-full bg-navy sm:size-1" />
           Exclusive Collection Launch: Discover Timeless Elegance Today
-          <span aria-hidden className="size-0.5 rounded-full bg-navy xl:size-1" />
+          <span aria-hidden className="size-0.5 rounded-full bg-navy sm:size-1" />
         </p>
 
-        <div className="hidden items-center justify-end gap-5 xl:flex">
+        <div className="hidden items-center justify-end gap-5 lg:flex">
           <button type="button" aria-label="Account">
             <Icon name="HiOutlineUserCircle" size={17.22} />
           </button>
@@ -80,17 +80,17 @@ export default function Header() {
       </div>
 
       {/* Main header: desktop */}
-      <div className="hidden h-20 border-b border-line xl:flex">
+      <div className="hidden h-20 border-b border-line lg:flex">
         <Link
           href="/"
           aria-label="MyJewel home"
-          className="flex w-[250px] shrink-0 items-center justify-center border-r border-line"
+          className="flex w-[200px] shrink-0 xl:w-[250px] items-center justify-center border-r border-line"
         >
           <Logo />
         </Link>
 
         <nav aria-label="Main" className="flex flex-1 items-center justify-center">
-          <ul className="flex items-center gap-x-10 min-[1440px]:gap-x-14">
+          <ul className="flex items-center gap-x-5 xl:gap-x-10 min-[1440px]:gap-x-14">
             {NAV_ITEMS.map(({ label, hasMenu }) => (
               <li key={label}>
                 <Link
@@ -108,14 +108,14 @@ export default function Header() {
         <button
           type="button"
           aria-label="Search"
-          className="flex w-[103px] shrink-0 items-center justify-center border-l border-line"
+          className="flex w-20 shrink-0 xl:w-[103px] items-center justify-center border-l border-line"
         >
           <Icon name="IoSearchOutline" size={30} />
         </button>
       </div>
 
       {/* Main header: mobile */}
-      <div className="grid h-[60px] grid-cols-[1fr_auto_1fr] items-center px-4 shadow-[0_4px_8px_rgba(0,0,0,0.05)] xl:hidden">
+      <div className="grid h-[60px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-8 shadow-[0_4px_8px_rgba(0,0,0,0.05)] lg:hidden">
         <div className="flex items-center gap-4">
           <button type="button" aria-label="Open menu">
             <Icon name="TbMenu2" size={18} />
