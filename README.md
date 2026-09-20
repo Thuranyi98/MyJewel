@@ -2,6 +2,8 @@
 
 A responsive, single-page landing page for **MyJewel**, a custom jewelry brand, rebuilt pixel-for-pixel from a Figma design (desktop 1440px and mobile 375px, with fluid behaviour in between). It is built with the Next.js App Router, TypeScript and Tailwind CSS.
 
+**Live site:** <https://my-jewel-mauve.vercel.app/>
+
 | Layer | Choice |
 |---|---|
 | Framework | Next.js **16.3.5** (App Router, Turbopack), React 19.2 |
@@ -54,19 +56,21 @@ Both are optional; create `.env.local` (git-ignored) to set them.
 | Variable | Used for | Default |
 |---|---|---|
 | `EMAIL_ADDRESS` | Recipient of the simulated newsletter notification (see [3.1](#31-newsletter-subscription)) | unset → a warning is logged and the dispatch is still simulated |
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin for `metadataBase`, canonical URL, Open Graph, JSON-LD, `sitemap.xml` and `robots.txt` | `https://$VERCEL_PROJECT_PRODUCTION_URL` on Vercel, otherwise `http://localhost:3000` |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin for `metadataBase`, canonical URL, Open Graph, JSON-LD, `sitemap.xml` and `robots.txt` | `https://$VERCEL_PROJECT_PRODUCTION_URL` on Vercel, otherwise the live URL `https://my-jewel-mauve.vercel.app` (`LIVE_URL` in `lib/site.ts`) |
 
 ```bash
 # .env.local
 EMAIL_ADDRESS=owner@example.com
-NEXT_PUBLIC_SITE_URL=https://www.your-domain.com
+NEXT_PUBLIC_SITE_URL=https://www.your-domain.com   # only needed for a custom domain
 ```
 
-> **Set `NEXT_PUBLIC_SITE_URL` before deploying**, otherwise the sitemap, canonical and Open Graph URLs point at `localhost`.
+> The SEO URLs already point at the live site (`https://my-jewel-mauve.vercel.app`). Set `NEXT_PUBLIC_SITE_URL` only if you attach a custom domain.
 
 ### Deploying
 
-Any Node host works; the project is Vercel-ready. Add the two environment variables above in the project settings. The home page is prerendered and revalidated every hour (ISR, see 3.2).
+Deployed on Vercel: <https://my-jewel-mauve.vercel.app/>. Any Node host works. Add `EMAIL_ADDRESS` in the project settings (and `NEXT_PUBLIC_SITE_URL` for a custom domain). The home page is prerendered and revalidated every hour (ISR, see 3.2).
+
+> Linux builds are case-sensitive: keep asset file names identical to their imports (`amex.png`, not `Amex.png`).
 
 ---
 
@@ -167,12 +171,14 @@ Targets: LCP < 2.5 s, CLS = 0, Lighthouse 90–100 (targets — verify on a prod
 
 Adding a page later: create the route, then add an entry to `ROUTES` in `lib/site.ts` — it appears in `sitemap.xml` automatically.
 
-Verify after `npm run build && npm run start`:
+Live SEO files: [robots.txt](https://my-jewel-mauve.vercel.app/robots.txt) · [sitemap.xml](https://my-jewel-mauve.vercel.app/sitemap.xml) · [manifest](https://my-jewel-mauve.vercel.app/manifest.webmanifest) · [og-image.jpg](https://my-jewel-mauve.vercel.app/og-image.jpg)
+
+Verify on the live site (or on `http://localhost:3000` after `npm run build && npm run start`):
 
 ```bash
-curl http://localhost:3000/robots.txt
-curl http://localhost:3000/sitemap.xml
-curl -s http://localhost:3000 | grep -E 'og:|twitter:|canonical|ld\+json'
+curl https://my-jewel-mauve.vercel.app/robots.txt
+curl https://my-jewel-mauve.vercel.app/sitemap.xml
+curl -s https://my-jewel-mauve.vercel.app | grep -E 'og:|twitter:|canonical|ld\+json'
 ```
 
 ---
