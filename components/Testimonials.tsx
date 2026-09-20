@@ -1,84 +1,8 @@
-import amira from "@/public/images/testimonials/amira-k.png";
-import daniel from "@/public/images/testimonials/daniel-r-langosh.png";
-import rania from "@/public/images/testimonials/rania-m.png";
-import sophia from "@/public/images/testimonials/sophia-l.png";
-import TestimonialCarousel, {
-  type Testimonial,
-} from "@/components/TestimonialCarousel";
-
-const QUOTES_URL = "https://dummyjson.com/quotes?limit=200";
-const MAX_TESTIMONIALS = 12;
-
-const PEOPLE = [
-  { name: "Amira K", photo: amira },
-  { name: "Sophia L", photo: sophia },
-  { name: "Rania M", photo: rania },
-  { name: "Daniel R Langosh", photo: daniel },
-];
-const ROLE = "Product Quality Engineer";
-
-// Shown when the quotes API is unreachable (or returns too few quotes). It must hold enough
-// entries for a full carousel (3 pages × 4 cards); the first four are the Figma sample texts,
-// the rest are a snapshot of the same dummyjson quotes.
-const FALLBACK_QUOTES = [
-  "Absolutely breathtaking! The craftsmanship of my diamond ring.",
-  "From the moment I stepped into iDiamond, I felt like royalty.",
-  "Every detail, from the sparkle of the diamonds to the elegant packaging.",
-  "Exceptional quality and outstanding service doesn’t just sell jewelry.",
-  "If you can't make it good, at least make it look good.",
-  "I will praise any man that will praise me.",
-  "One of the greatest diseases is to be nobody to anybody.",
-  "The less of the World, the freer you live.",
-  "Respond to every call that excites your spirit.",
-  "The way to get started is to quit talking and begin doing.",
-  "Happiness comes towards those which believe in him.",
-  "When I am silent, I have thunder hidden inside.",
-];
-
-// The API returns some quotes in Title Case ("Can'T"); normalise those to sentence case.
-function tidy(quote: string) {
-  const words = quote.split(/\s+/).filter((word) => /^[A-Za-z]/.test(word));
-  const titleCased =
-    words.length > 3 && words.every((word) => /^[A-Z]/.test(word[0]));
-  if (!titleCased) return quote;
-  const lower = quote.toLowerCase().replace(/\bi\b/g, "I");
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
-}
-
-// ISR: the response is cached for an hour and refreshed in the background.
-async function getQuotes(): Promise<string[]> {
-  try {
-    const response = await fetch(QUOTES_URL, { next: { revalidate: 3600 } });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data: { quotes?: { quote: string }[] } = await response.json();
-    const quotes = (data.quotes ?? [])
-      .map(({ quote }) => tidy(quote.trim()))
-      // Short enough for two lines in a 300px card.
-      .filter((quote) => quote.length >= 30 && quote.length <= 64);
-    const unique = [...new Set(quotes)].slice(0, MAX_TESTIMONIALS);
-    if (unique.length < PEOPLE.length) throw new Error("not enough quotes");
-    return unique;
-  } catch (error) {
-    console.error(
-      "[testimonials] quotes API unavailable, using fallback:",
-      error,
-    );
-    return FALLBACK_QUOTES;
-  }
-}
+import TestimonialCarousel from "@/components/TestimonialCarousel";
+import { getTestimonials } from "@/lib/testimonials";
 
 export default async function Testimonials() {
-  const quotes = await getQuotes();
-  const items: Testimonial[] = quotes.map((quote, index) => {
-    const person = PEOPLE[index % PEOPLE.length];
-    return {
-      id: `${index}-${person.name}`,
-      name: person.name,
-      role: ROLE,
-      quote,
-      photo: person.photo,
-    };
-  });
+  const items = await getTestimonials();
 
   return (
     <section aria-labelledby="testimonials-heading" className="bg-white">

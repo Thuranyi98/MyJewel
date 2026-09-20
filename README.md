@@ -81,6 +81,8 @@ Deployed on Vercel: <https://my-jewel-mauve.vercel.app/>. Any Node host works. A
 ├── app/
 │   ├── actions/
 │   │   └── newsletter.ts        # Server Action: validates + simulates the notification
+│   ├── api/testimonials/
+│   │   └── route.ts             # Public JSON endpoint (cached, ISR)
 │   ├── globals.css              # Tailwind import + design tokens (@theme)
 │   ├── layout.tsx               # Fonts, metadata (incl. icons), Open Graph/Twitter, JSON-LD, Header/Footer
 │   ├── manifest.ts              # Web app manifest (points at /favicon_io/ icons)
@@ -93,12 +95,13 @@ Deployed on Vercel: <https://my-jewel-mauve.vercel.app/>. Any Node host works. A
 │   ├── CustomJewelry.tsx        # Breadcrumb, intro, images and the 6-step process
 │   ├── WhyChoose.tsx            # "Why Choose MyJewel?" cards
 │   ├── ExploreMore.tsx          # Guide links + photo
-│   ├── Testimonials.tsx         # Server component: fetches quotes (ISR)
+│   ├── Testimonials.tsx         # Server component: fetches /api/testimonials (ISR)
 │   ├── TestimonialCarousel.tsx  # Client component: swipeable carousel
 │   ├── Footer.tsx               # Link columns, newsletter, payments, legal
 │   └── NewsletterForm.tsx       # Client component: form + validation UI
 ├── lib/
-│   └── site.ts                  # Site URL, title/description, OG image, sitemap routes
+│   ├── site.ts                  # Site URL, title/description, OG image, sitemap routes
+│   └── testimonials.ts          # Testimonial data + getTestimonials() (fetch with revalidate)
 ├── public/
 │   ├── favicon_io/              # Favicon set (ico, 16/32 png, apple-touch, android-chrome)
 │   ├── icons/                   # SVG icons and logo
@@ -135,13 +138,27 @@ Page order (top to bottom): **Header → Banner → CustomJewelry → WhyChoose 
 
 Try it: set `EMAIL_ADDRESS`, submit an email in the footer, watch the terminal.
 
-### 3.2 Testimonials (API + ISR)
+### 3.2 Testimonials (public API + ISR)
 
-`components/Testimonials.tsx` (server) + `components/TestimonialCarousel.tsx` (client)
+`app/api/testimonials/route.ts` (API) + `lib/testimonials.ts` (data + fetch) + `components/Testimonials.tsx` (server) + `components/TestimonialCarousel.tsx` (client)
 
-- Quotes come from `https://dummyjson.com/quotes` via `fetch(url, { next: { revalidate: 3600 } })` → cached for 1 hour (the build output shows `Revalidate 1h`).
-- Short quotes are filtered, 12 are used (3 pages × 4 cards); names and portraits are local.
-- If the API fails, 12 built-in quotes are used and the error is logged.
+**Endpoint:** `GET /api/testimonials` → `{ count, testimonials: [{ id, name, role, quote, photo }] }` — public, read-only JSON with CORS enabled: <https://my-jewel-mauve.vercel.app/api/testimonials>. The data matches the Figma design exactly (Amira K, Sophia L, Rania M, Daniel R Langosh, "Product Quality Engineer", the four quotes character for character). Only those four cards are in the design; the other eight (three pages × four cards, like the design's pagination) are placeholders in the same style.
+
+**Caching (two layers):**
+
+```ts
+// app/api/testimonials/route.ts — the endpoint is cached and regenerated at most once an hour (ISR),
+// and Cache-Control lets the CDN / browsers reuse it the same way
+export const revalidate = 3600;
+// headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" }
+
+// lib/testimonials.ts — the page fetches the endpoint; Next caches the response for an hour
+const res = await fetch(`${API_ORIGIN}/api/testimonials`, { next: { revalidate: 3600 } });
+```
+
+- The build output shows `Revalidate 1h` for both `/` and `/api/testimonials`; visitors get the cached page instantly and a stale one is refreshed in the background.
+- If the request fails (for example the very first deploy, when the endpoint doesn't exist yet) the same list is used from `lib/testimonials.ts`, so the page always renders, and a warning is logged.
+- Swapping in a different source (a CMS, or e.g. `https://dummyjson.com/quotes`) only means changing `getTestimonials()`.
 
 ---
 

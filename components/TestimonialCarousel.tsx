@@ -1,15 +1,8 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-export type Testimonial = {
-  id: string;
-  name: string;
-  role: string;
-  quote: string;
-  photo: StaticImageData;
-};
+import type { Testimonial } from "@/lib/testimonials";
 
 function Chevron({ className = "" }: { className?: string }) {
   return (
@@ -164,7 +157,8 @@ export default function TestimonialCarousel({
                 </figcaption>
                 <blockquote className="mt-[19.4px]">
                   <p className="font-sans text-sm leading-5 text-ink">
-                    {quote}
+                    {/* HTML collapses a double space; keep the one in the design's fourth quote */}
+                    {quote.replace(/ {2}/g, " \u00a0")}
                   </p>
                 </blockquote>
               </figure>
