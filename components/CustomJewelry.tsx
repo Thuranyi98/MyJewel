@@ -45,7 +45,8 @@ export default function CustomJewelry() {
         aria-label="Breadcrumb"
         className="font-sans text-sm leading-[1.6] text-ink"
       >
-        <Link href="/" className="text-muted hover:underline">
+        {/* inline-block: same look, but the link no longer counts as "a link inside a text block" */}
+        <Link href="/" className="inline-block text-muted hover:underline">
           Home
         </Link>{" "}
         <span className="text-muted" aria-hidden>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import InlineIcon from "@/components/InlineIcon";
 import NewsletterForm from "@/components/NewsletterForm";
 import amex from "@/public/images/footer/amex.png";
 import applePay from "@/public/images/footer/apple-pay.png";
@@ -59,8 +60,8 @@ const LINK_COLUMNS = [
 const LEGAL_LINKS = ["Terms & Conditions", "Privacy Policy", "Site Map"];
 
 const SOCIAL_LINKS = [
-  { label: "Facebook", icon: "/icons/LiaFacebook.svg" },
-  { label: "Instagram", icon: "/icons/LiaInstagram.svg" },
+  { label: "Facebook", icon: "LiaFacebook" },
+  { label: "Instagram", icon: "LiaInstagram" },
 ];
 
 const TITLE_CLASS =
@@ -166,6 +167,9 @@ export default function Footer() {
                   width={58}
                   height={39}
                   sizes="58px"
+                  loading="eager"
+                  decoding="sync"
+                  fetchPriority="low"
                   className="h-auto w-[46.33px] md:w-[57.5px] lg:w-full"
                 />
               </li>
@@ -179,6 +183,9 @@ export default function Footer() {
                   width={58}
                   height={40}
                   sizes="58px"
+                  loading="eager"
+                  decoding="sync"
+                  fetchPriority="low"
                   className="h-auto w-[46.33px] md:w-[57.5px] lg:w-full"
                 />
               </li>
@@ -189,6 +196,9 @@ export default function Footer() {
                   width={58}
                   height={40}
                   sizes="58px"
+                  loading="eager"
+                  decoding="sync"
+                  fetchPriority="low"
                   className="h-auto w-[46.33px] md:w-[57.5px] lg:w-full"
                 />
               </li>
@@ -199,6 +209,9 @@ export default function Footer() {
                   width={58}
                   height={40}
                   sizes="58px"
+                  loading="eager"
+                  decoding="sync"
+                  fetchPriority="low"
                   className="h-auto w-[46.33px] md:w-[57.5px] lg:w-full"
                 />
               </li>
@@ -227,11 +240,9 @@ export default function Footer() {
             <div className="flex items-center gap-[4.5px] md:gap-[25px]">
               {SOCIAL_LINKS.map(({ label, icon }) => (
                 <Link key={label} href="#" aria-label={label}>
-                  <Image
-                    src={icon}
-                    alt=""
-                    width={25}
-                    height={25}
+                  <InlineIcon
+                    name={icon}
+                    size={25}
                     className="size-[18px] md:size-[25px]"
                   />
                 </Link>

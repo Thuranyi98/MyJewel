@@ -62,6 +62,7 @@ export default function NewsletterForm() {
           alt=""
           width={18}
           height={18}
+          loading="eager"
           className="size-3 md:size-[18px]"
         />
       </button>

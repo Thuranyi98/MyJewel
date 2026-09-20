@@ -151,8 +151,9 @@ Targets: LCP < 2.5 s, CLS = 0, Lighthouse 90–100 (targets — verify on a prod
 
 - **LCP:** hero image uses `priority` + `loading="eager"`, explicit size and `sizes`; mobile/desktop variants are separate assets via `<picture>`, so only one downloads.
 - **CLS:** every `<Image>` has `width`/`height`; media sits in fixed-height or aspect-ratio boxes; blur placeholders on photos only.
-- **Fonts:** `next/font/google` (self-hosted, `display: "swap"`).
-- **JavaScript:** Server Components by default; only the newsletter form and carousel are client-side; below-the-fold images are lazy.
+- **Fonts:** `next/font/google` (self-hosted, `display: "swap"`); Open Sans (desktop-only label) is not preloaded.
+- **CSS:** the small Tailwind stylesheet is inlined (`experimental.inlineCss`), so no render-blocking CSS request.
+- **JavaScript:** Server Components by default; only the newsletter form and carousel are client-side; large below-the-fold photos are lazy, while small icons/badges are inlined SVG or eager so they never pop in on reload. `/icons` and `/images` are served with a 1-day `Cache-Control`.
 - **Accessibility:** semantic landmarks, one `<h1>`, `alt` on every image, `aria-label` on icon buttons. Known gap: the design's `#7A7A7A` text is 4.3:1 on white (AA needs 4.5:1).
 
 ---

@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // The Tailwind stylesheet is ~10 KB: inline it so first paint doesn't wait for a render-blocking
+  // CSS request (production builds only).
+  experimental: { inlineCss: true },
   // Browsers and crawlers request /favicon.ico directly; the icon set lives in public/favicon_io.
   async redirects() {
     return [

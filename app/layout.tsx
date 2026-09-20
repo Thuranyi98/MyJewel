@@ -17,10 +17,13 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+// Only used by the desktop "Book an appointment" label, so it is not preloaded: mobile never
+// downloads it, and it stays off the critical path of the hero image (LCP).
 const openSans = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const playfairDisplay = Playfair_Display({

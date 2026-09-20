@@ -26,15 +26,23 @@ function loadSvg(name: string, size: number) {
 export default function InlineIcon({
   name,
   size,
+  className,
 }: {
   name: string;
   size: number;
+  // Responsive box (e.g. "size-[18px] md:size-[25px]"); the SVG then fills it. Without it the
+  // icon is `size`px square.
+  className?: string;
 }) {
   return (
     <span
       aria-hidden
-      className="block shrink-0"
-      style={{ width: size, height: size }}
+      className={
+        className
+          ? `block shrink-0 [&>svg]:size-full ${className}`
+          : "block shrink-0"
+      }
+      style={className ? undefined : { width: size, height: size }}
       dangerouslySetInnerHTML={{ __html: loadSvg(name, size) }}
     />
   );
