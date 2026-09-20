@@ -52,7 +52,11 @@ export default function TestimonialCarousel({
 }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [page, setPage] = useState(0);
-  const [pageCount, setPageCount] = useState(1);
+  // Assume the desktop layout (4 per page) until measured, so the dots and arrow states are
+  // already correct in the server HTML.
+  const [pageCount, setPageCount] = useState(
+    Math.max(1, Math.ceil(items.length / 4)),
+  );
 
   // Cards per page depends on the viewport, so derive it from the real layout.
   const measure = useCallback(() => {

@@ -8,6 +8,10 @@ import ringMobile from "@/public/images/banner/banner-ring-mobile.png";
 import tweezers from "@/public/images/banner/banner-tweezers.png";
 import tweezersMobile from "@/public/images/banner/banner-tweezers-mobile.png";
 
+// 1×1 transparent GIF: the diamonds are a transparent cut-out, so a coloured blur would show as a grey box.
+const BLUR_PLACEHOLDER =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 /*
  * Below `md` the 375px mobile composition is used as designed. From `md` up the
  * 1440px desktop composition is scaled with the section width (cqw), capped at its
@@ -98,13 +102,15 @@ export default function Banner() {
         {/* Decorative jewelry */}
         <Image
           src={diamonds}
-          alt=""
-          aria-hidden
+          alt="Loose brilliant-cut diamonds for custom jewelry"
+          title="Custom jewelry diamonds"
           width={533}
           height={347}
           sizes="(min-width: 1440px) 534px, (min-width: 768px) 37vw, 143px"
+          priority
           loading="eager"
-          fetchPriority="high"
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
           className="pointer-events-none absolute bottom-[9px] left-0 h-auto w-[142.8px] md:bottom-0 md:w-[min(37.04cqw,533.4px)]"
         />
         <picture className="pointer-events-none absolute right-0 bottom-0">

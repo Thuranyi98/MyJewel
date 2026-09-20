@@ -17,12 +17,22 @@ const PEOPLE = [
 ];
 const ROLE = "Product Quality Engineer";
 
-// Shown when the quotes API is unreachable.
+// Shown when the quotes API is unreachable (or returns too few quotes). It must hold enough
+// entries for a full carousel (3 pages × 4 cards); the first four are the Figma sample texts,
+// the rest are a snapshot of the same dummyjson quotes.
 const FALLBACK_QUOTES = [
   "Absolutely breathtaking! The craftsmanship of my diamond ring.",
   "From the moment I stepped into iDiamond, I felt like royalty.",
   "Every detail, from the sparkle of the diamonds to the elegant packaging.",
   "Exceptional quality and outstanding service doesn’t just sell jewelry.",
+  "If you can't make it good, at least make it look good.",
+  "I will praise any man that will praise me.",
+  "One of the greatest diseases is to be nobody to anybody.",
+  "The less of the World, the freer you live.",
+  "Respond to every call that excites your spirit.",
+  "The way to get started is to quit talking and begin doing.",
+  "Happiness comes towards those which believe in him.",
+  "When I am silent, I have thunder hidden inside.",
 ];
 
 // The API returns some quotes in Title Case ("Can'T"); normalise those to sentence case.

@@ -171,3 +171,10 @@
 ## 19. Gotchas found in review
 - **Hydration mismatch on the carousel arrows:** the `disabled` attribute on the prev/next buttons could differ between server HTML and the first client render in browsers that restore form-control state on reload (Firefox), so they use `aria-disabled` (guarded click handlers, `aria-disabled:` styles). Not reproducible in Chrome; keep it that way.
 - **`next/image` dev warning "either width or height modified":** the `width`/`height` attributes must round to the rendered desktop size (logo 133×35, banner diamonds 533×347, ring band 252×330) or React logs it once per image.
+
+## 20. Implementation notes for the Lighthouse / Crawler rules (§6–§7 above are the user's rules and were not edited)
+- `lib/site.ts` holds `SITE_URL` (`NEXT_PUBLIC_SITE_URL`, else `VERCEL_PROJECT_PRODUCTION_URL`, else `http://localhost:3000` — **set it before deploying**), title/description, the OG image and the `ROUTES` list used by the sitemap.
+- `app/sitemap.ts` (url + lastModified + changeFrequency + priority per route), `app/robots.ts` (`*`, Googlebot, Bingbot → `Allow: /` + `Sitemap:`), `app/layout.tsx` (`metadataBase`, title template, description, `alternates.canonical`, Open Graph + Twitter `summary_large_image` with `/og-image.jpg`, robots, JSON-LD `Organization` + `WebSite` `@graph` in a `<script type="application/ld+json">`, fonts with explicit `display: "swap"`).
+- `public/og-image.jpg` is a static 1200×630 composition of the banner assets (regenerate if the branding changes).
+- Hero LCP image (`Banner` diamonds): `priority` + `loading="eager"`, explicit 533×347, `sizes`, descriptive `alt` + `title`, `placeholder="blur"` with a 1×1 transparent `blurDataURL` (the image is a transparent cut-out, a coloured blur shows as a grey box). Note Next 16 marks `priority` as deprecated in favour of `preload`; it still works and logs nothing on 16.3.5.
+- Carousel fallback: 12 fallback quotes (not 4) + SSR-correct dots, because with only 4 items the carousel has a single page (no dots, disabled arrows) whenever the quotes API is unreachable.
