@@ -26,6 +26,7 @@
 ## 6. Header Spec & Design Tokens (implemented in `components/Header.tsx`)
 - **Tokens** (`app/globals.css` `@theme`): `navy` #15274B, `ink` #434343, `line` #E4E4E4. Fonts: `font-sans` = DM Sans, `font-open` = Open Sans, `font-playfair` = Playfair Display.
 - **Assets:** SVG icons + logo live in `public/icons/` (rendered via `next/image`).
+- **Wide screens:** the header's borders/background are full-bleed but its desktop content (top bar + main bar) sits in a centered `max-w-[1440px]` box, like every section, so the logo/nav/search stay aligned with the page grid on screens wider than 1440px. Figma itself puts the logo 22px left of the 80px content edge (logo centred in a 250px cell), and that offset is kept.
 - **Desktop/mobile switch:** Tailwind `lg` (1024px). Below that the mobile header shows. Between 1024–1440 the logo/search cells and nav gaps shrink (`lg:` 200/80px, gap 20 → `xl:` 250/103px, gap 40 → 1440px gap 56). Announcement text is 8px below `sm`, 11px from `sm` up.
 - **Sub header:** 35px desktop / 25px mobile, 1px `line` bottom border. Announcement dots: 4px desktop / 2px mobile, `navy`.
 - **Main header:** 80px desktop / 60px mobile. Logo 133.44×34.99 desktop / 94×24.65 mobile.

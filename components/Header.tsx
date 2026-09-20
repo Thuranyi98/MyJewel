@@ -50,68 +50,81 @@ function Logo() {
 export default function Header() {
   return (
     <header className="relative z-10 bg-white">
-      {/* Sub header */}
-      <div className="flex h-[25px] items-center justify-center border-b border-line lg:grid lg:h-[35px] lg:grid-cols-[1fr_auto_1fr] lg:px-10">
-        <Link
-          href="#"
-          className="hidden items-center gap-2 font-open text-[10px] leading-[1.6] tracking-[0.03em] text-navy uppercase lg:flex"
-        >
-          <Icon name="HiOutlineCalendarDays" size={20} />
-          Book an appointment
-        </Link>
+      {/* Sub header (border is full-bleed, content follows the 1440px page grid) */}
+      <div className="h-[25px] border-b border-line lg:h-[35px]">
+        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-center lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-10">
+          <Link
+            href="#"
+            className="hidden items-center gap-2 font-open text-[10px] leading-[1.6] tracking-[0.03em] text-navy uppercase lg:flex"
+          >
+            <Icon name="HiOutlineCalendarDays" size={20} />
+            Book an appointment
+          </Link>
 
-        <p className="flex items-center gap-1.5 text-center font-sans text-[8px] leading-[1.6] tracking-[0.03em] text-navy sm:gap-3 sm:text-[11px]">
-          <span aria-hidden className="size-0.5 rounded-full bg-navy sm:size-1" />
-          Exclusive Collection Launch: Discover Timeless Elegance Today
-          <span aria-hidden className="size-0.5 rounded-full bg-navy sm:size-1" />
-        </p>
+          <p className="flex items-center gap-1.5 text-center font-sans text-[8px] leading-[1.6] tracking-[0.03em] text-navy sm:gap-3 sm:text-[11px]">
+            <span
+              aria-hidden
+              className="size-0.5 rounded-full bg-navy sm:size-1"
+            />
+            Exclusive Collection Launch: Discover Timeless Elegance Today
+            <span
+              aria-hidden
+              className="size-0.5 rounded-full bg-navy sm:size-1"
+            />
+          </p>
 
-        <div className="hidden items-center justify-end gap-5 lg:flex">
-          <button type="button" aria-label="Account">
-            <Icon name="HiOutlineUserCircle" size={17.22} />
-          </button>
-          <button type="button" aria-label="Wishlist">
-            <Icon name="heart" size={17.22} />
-          </button>
-          <button type="button" aria-label="Cart">
-            <Icon name="IoBagOutline" size={17.22} />
-          </button>
+          <div className="hidden items-center justify-end gap-5 lg:flex">
+            <button type="button" aria-label="Account">
+              <Icon name="HiOutlineUserCircle" size={17.22} />
+            </button>
+            <button type="button" aria-label="Wishlist">
+              <Icon name="heart" size={17.22} />
+            </button>
+            <button type="button" aria-label="Cart">
+              <Icon name="IoBagOutline" size={17.22} />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Main header: desktop */}
-      <div className="hidden h-20 border-b border-line lg:flex">
-        <Link
-          href="/"
-          aria-label="MyJewel home"
-          className="flex w-[200px] shrink-0 xl:w-[250px] items-center justify-center border-r border-line"
-        >
-          <Logo />
-        </Link>
+      <div className="hidden h-20 border-b border-line lg:block">
+        <div className="mx-auto flex h-full max-w-[1440px]">
+          <Link
+            href="/"
+            aria-label="MyJewel home"
+            className="flex w-[200px] shrink-0 xl:w-[250px] items-center justify-center border-r border-line"
+          >
+            <Logo />
+          </Link>
 
-        <nav aria-label="Main" className="flex flex-1 items-center justify-center">
-          <ul className="flex items-center gap-x-5 xl:gap-x-10 min-[1440px]:gap-x-14">
-            {NAV_ITEMS.map(({ label, hasMenu }) => (
-              <li key={label}>
-                <Link
-                  href="#"
-                  className="flex items-center gap-2 text-center font-sans text-[13px] leading-[1.6] tracking-[0.08em] text-ink uppercase"
-                >
-                  {label}
-                  {hasMenu && <Icon name="FiChevronDown" size={13} />}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav
+            aria-label="Main"
+            className="flex flex-1 items-center justify-center"
+          >
+            <ul className="flex items-center gap-x-5 xl:gap-x-10 min-[1440px]:gap-x-14">
+              {NAV_ITEMS.map(({ label, hasMenu }) => (
+                <li key={label}>
+                  <Link
+                    href="#"
+                    className="flex items-center gap-2 text-center font-sans text-[13px] leading-[1.6] tracking-[0.08em] text-ink uppercase"
+                  >
+                    {label}
+                    {hasMenu && <Icon name="FiChevronDown" size={13} />}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <button
-          type="button"
-          aria-label="Search"
-          className="flex w-20 shrink-0 xl:w-[103px] items-center justify-center border-l border-line"
-        >
-          <Icon name="IoSearchOutline" size={30} />
-        </button>
+          <button
+            type="button"
+            aria-label="Search"
+            className="flex w-20 shrink-0 xl:w-[103px] items-center justify-center border-l border-line"
+          >
+            <Icon name="IoSearchOutline" size={30} />
+          </button>
+        </div>
       </div>
 
       {/* Main header: mobile */}
