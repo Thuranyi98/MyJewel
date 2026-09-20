@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import InlineIcon from "@/components/InlineIcon";
 
 const CART_COUNT = 1;
 
@@ -12,26 +13,7 @@ const NAV_ITEMS = [
   { label: "Contact Us", hasMenu: false },
 ];
 
-function Icon({
-  name,
-  size,
-  className,
-}: {
-  name: string;
-  size: number;
-  className?: string;
-}) {
-  return (
-    <Image
-      src={`/icons/${name}.svg`}
-      alt=""
-      width={size}
-      height={size}
-      loading="eager"
-      className={className}
-    />
-  );
-}
+const Icon = InlineIcon;
 
 function Logo() {
   return (
