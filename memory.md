@@ -125,3 +125,17 @@
 - Step (72px tall, gap 28): number 14px ls 1% muted, natural width + 10px gap (title x moves with the digit width, as in Figma); title 16px 500 lh 100% ls 6% `heading`; description 14px **lh 18px** (measured; not in the spec), `muted`, gap 8; text block `max-w 299.3` (that is what makes descriptions wrap like Figma), pb 9 + 1px `line` border. Content is nudged 2px down (`pt-0.5`) and the intro 2.6px to match the screenshot.
 - Images: container 345×431.25 (aspect); big 251.73×321.25 at (0,0); small 161.43×213.94 (baked border included) at (183.57, 217.31); positioned in %. From `md` the desktop % values and typography apply, stacked, with the desktop fixed 43.5px number column.
 - Verified at 375 against the Figma screenshot: text rows within ~0.5px (item 6 within ~2.5px), step border lines and section geometry match. 1440 unchanged.
+
+## 13. Why Choose MyJewel Section — desktop (`components/WhyChoose.tsx`)
+- Mounted after `CustomJewelry`; at 1440 it starts at y=1637 and is 478px tall (pt 77, title box 50, gap 40, cards 194, pb 117), px 80, bg `surface` (#FCFCFC, new token).
+- Title Playfair 36px lh 50px ls 1% centered `heading`. Cards: `grid-cols-[repeat(3,minmax(0,400px))]` from `lg` — 400px wide (as Figma) and **fluid** (shrink) below 1440, gap 33.6 (measured; spec says 33), `min-h 194`, white, p 20, shadow `0 2px 14px rgba(0,0,0,.045)` (tuned to the screenshot).
+- Card content: 45px icon (`PiUserCircleCheckLight`, `game-icons_diamond-hard`, `IoRibbonOutline`), title Playfair 600 20px ls 3% `navy` (line-height 1.2 so wrapped titles don't collide; margins compensate), description DM Sans 16px `muted`, **lh 1.3** (measured 20.7px; the spec's 100% doesn't match the screenshot). Titles/description offsets `mt 21.7 / 20.6` are fitted to the design.
+- Description line breaks are forced (`<br>`) from 1300px up because the Figma breaks don't follow natural wrapping (card 1 breaks before "your"); below 1300 it wraps naturally with `text-balance`.
+- Decoration: `public/images/why-choose/circles.svg` (was `Frame 1592.svg`), 629×254 at the section's bottom-right, behind the cards, `lg` and up only. Circle tops verified against the screenshot.
+- Verified vs Figma at 1440: text/icons within ~0.7px, cards at x 80 / 513.6 / 947.2. Below `lg` cards stack (interim); mobile spec pending.
+
+## 14. Why Choose MyJewel — mobile (< `lg`, 375 design; same `WhyChoose.tsx`)
+- Section 786px tall at 375: pt 70, px 15, pb 120, bg `surface`. Title Playfair 26px lh 50 ls 0 → 20px → three cards stacked, gap 20.
+- Card 345×162: p 20, 35px icon, title Playfair 600 16px lh 100% ls 3% `navy` (gap 15), description DM Sans 14px **lh 18px** (measured) `muted` (gap 15), `max-w 290` below `md` — this is what makes card 1 wrap "…create your / perfect piece." like Figma (the full card width would fit one more word). Title/description are nudged with `relative top-[2.3px]` / `top-[6px]` (visual only) to match the screenshot; the layout heights stay exact.
+- Decoration on mobile: two SVGs instead of the single desktop one — `ellipse-left.svg` (372×130, left/bottom 0) and `ellipse-right.svg` (204×316, right/bottom 0), both `lg:hidden`; `circles.svg` is `hidden lg:block`. Placement derived from circle-arc positions in the screenshot (top edges match).
+- From `md` the description is no longer width-limited; cards stay one column until `lg`. Verified at 375 vs the screenshot: text within ~0.5px.
